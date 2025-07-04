@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>42 – A Virtual Museum</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #f0f0f0;
+    }
+
+    nav {
+      background-color: #111;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a {
+      color: #f0f0f0;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #9e8cff;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #111;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      padding: 0.5rem;
+      border: 1px solid #333;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: #f0f0f0;
+      display: block;
+      padding: 0.25rem 0;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      color: #9e8cff;
+    }
+
+    main {
+      padding: 6rem 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .shiny-42 {
+      font-size: 6rem;
+      font-weight: 900;
+      font-family: 'Space Grotesk', sans-serif;
+      background: linear-gradient(145deg, #ff00ff, #00d4ff, #ffffff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 0 10px rgba(255, 0, 255, 0.4),
+        0 0 20px rgba(0, 212, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+      animation: pulse-glow 4s ease-in-out infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        text-shadow:
+          0 0 10px rgba(255, 0, 255, 0.4),
+          0 0 20px rgba(0, 212, 255, 0.3),
+          0 0 30px rgba(255, 255, 255, 0.2);
+      }
+      50% {
+        text-shadow:
+          0 0 20px rgba(255, 0, 255, 0.7),
+          0 0 30px rgba(0, 212, 255, 0.5),
+          0 0 40px rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .enter-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: #ff00ff;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .enter-button:hover {
+      background: #8a2be2;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      opacity: 0.6;
+    }
+
+    footer img {
+      height: 40px;
+      margin: 0 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">42</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <div class="dropdown">
+      <a href="map.html">Map ▾</a>
+      <div class="dropdown-content">
+        <a href="map/observatory.html">Observatory</a>
+        <a href="map/nebula.html">Nebula</a>
+        <a href="map/studio.html">Studio</a>
+        <a href="map/horizon.html">Horizon</a>
+      </div>
+    </div>
+    <a href="events.html">Events</a>
+    <a href="about.html">About</a>
+  </div>
+</nav>
+
+<main>
+  <h1 class="shiny-42">42</h1>
+  <p>Not not a museeum.</p>
+  <a href="map.html" class="enter-button">Enter Now</a>
+</main>
+
+<footer>
+  <p style="margin-bottom: 0.5rem;">A project by</p>
+  <img src="assets/Premissa_Logo_transparent.png" alt="Premissa Logo" style="height: 60px;" />
+  <p style="margin: 2rem 0 0.5rem;">Funded by</p>
+  <img src="assets/Jovensmais.jpg" alt="Jovens+" style="height: 50px; max-width: 200px;" />
+  <img src="assets/Drac-rjaac.png" alt="Drac-rjaac" style="height: 50px; max-width: 200px;" />
+  <div style="margin-top: 2rem; font-size: 0.85rem;">
+    <a href="about.html" style="margin: 0 1rem; color: #ccc; text-decoration: none;">About</a> |
+    <a href="participate.html" style="margin: 0 1rem; color: #ccc; text-decoration: none;">Participate</a> |
+    <a href="contact.html" style="margin: 0 1rem; color: #ccc; text-decoration: none;">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

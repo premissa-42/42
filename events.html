@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events – 42</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <style>
+    #calendar {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      color: black;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+    .event-card {
+      background: #111;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin: 1rem 0;
+      color: white;
+    }
+    .event-card.recurring {
+      border: 1px dashed #666;
+      background-color: #1a1a1a;
+    }
+    .date {
+      font-style: italic;
+      color: #ccc;
+    }
+    .view-all-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #333;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+  <div class="logo">42</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <div class="dropdown">
+      <a href="map.html">Map ▾</a>
+      <div class="dropdown-content">
+        <a href="map/observatory.html">Observatory</a>
+        <a href="map/nebula.html">Nebula</a>
+        <a href="map/studio.html">Studio</a>
+        <a href="map/horizon.html">Horizon</a>
+      </div>
+    </div>
+    <a href="events.html">Events</a>
+    <a href="about.html">About</a>
+  </div>
+</nav>
+
+  <main>
+    <section class="hero">
+      <h1 class="glow">Events & Opportunities</h1>
+      <p>Meet 42 and fall in love.</p>
+    </section>
+
+    <section class="events-list">
+      <h2>Upcoming Events</h2>
+      <div id="upcoming-events">
+        <!-- Manually inserted recurring event -->
+        <div class="event-card recurring">
+          <h3>Social Hours – Every Monday</h3>
+          <p class="date">Weekly · Mondays · 18:00–21:00</p>
+          <p>Climb, play games, work out, read, or just have a coffee with us.</p>
+          <p><strong>Location:</strong> <a href="https://maps.google.com/?q=Rua+do+Laureano+200/11,+Ponta+Delgada" target="_blank" style="color:#ffccff; text-decoration: underline;">Premissa</a></p>
+        </div>
+      </div>
+
+      <h2>Past Events</h2>
+      <div id="past-events"></div>
+      <a href="#" id="view-all-past" class="view-all-btn" style="display: none;">View All Past Events</a>
+
+      <h2>Opportunities</h2>
+      <div id="opportunities"></div>
+    </section>
+
+    <div id="calendar"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Premissa & 42</p>
+  </footer>
+
+  <script>
+    fetch("/landing/events/events.json")
+      .then(res => res.json())
+      .then(events => {
+        const now = new Date();
+        const upcoming = document.getElementById("upcoming-events");
+        const past = document.getElementById("past-events");
+        const opportunities = document.getElementById("opportunities");
+        const viewAllBtn = document.getElementById("view-all-past");
+
+        const calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
+          initialView: "dayGridMonth",
+          events: events
+            .filter(e => e.type === "event")
+            .map(e => ({
+              title: e.title,
+              start: e.date,
+              url: e.link
+            })),
+          eventClick: function(info) {
+            info.jsEvent.preventDefault();
+            window.open(info.event.url, "_blank");
+          }
+        });
+        calendar.render();
+
+        const pastEvents = [];
+
+        events.forEach(event => {
+  const eventDate = new Date(event.date);
+  const card = document.createElement("div");
+  card.classList.add("event-card");
+
+  // Wenn Location "Premissa", dann verlinken:
+  const locationHTML = event.location === "Premissa"
+    ? `<a href="https://maps.google.com/?q=Rua+do+Laureano+200/11,+Ponta+Delgada" target="_blank" style="color:#ffccff; text-decoration: underline;">${event.location}</a>`
+    : event.location;
+
+  card.innerHTML = `
+    <h3>${event.title}</h3>
+    <p class="date">${eventDate.toLocaleString()}</p>
+    <p>${event.description}</p>
+    <p><strong>Location:</strong> ${locationHTML}</p>
+    <a href="${event.link}" target="_blank">More Info</a>
+  `;
+
+          if (event.type === "opportunity") {
+            opportunities.appendChild(card);
+          } else if (eventDate >= now) {
+            upcoming.appendChild(card);
+          } else {
+            pastEvents.push(card);
+          }
+        });
+
+        if (pastEvents.length > 5) {
+          pastEvents.slice(0, 5).forEach(card => past.appendChild(card));
+          viewAllBtn.style.display = "inline-block";
+          viewAllBtn.addEventListener("click", e => {
+            e.preventDefault();
+            past.innerHTML = "";
+            pastEvents.forEach(card => past.appendChild(card));
+            viewAllBtn.style.display = "none";
+          });
+        } else {
+          pastEvents.forEach(card => past.appendChild(card));
+        }
+
+        if (opportunities.childNodes.length === 0) {
+          opportunities.innerHTML = "<p><em>No opportunities available at the moment.</em></p>";
+        }
+      });
+  </script>
+</body>
+</html>
